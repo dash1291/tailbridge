@@ -17,7 +17,7 @@ func main() {
     socket.Bind("ipc://weather.ipc")
     
     // Open file and seek to end
-    FILE := "testfile"
+    FILE := "/var/log/system.log"
     log_file, err := os.Open(FILE)
     
     if err != nil {
@@ -37,13 +37,13 @@ func main() {
 
     done := make(chan bool)
 
-    println("watching")
+    println("Watching file for changes...")
     // Process events
     go func() {
         for {
             ev := <-watcher.Event
             if (ev.IsModify()) {
-                println("asdfasd")
+
                 // Create a buffer for reading the new data
                 stat, _ = os.Stat(FILE)
                 new_size := stat.Size()
@@ -67,7 +67,7 @@ func main() {
         }
     }()
 
-    err = watcher.Watch("testfile")
+    err = watcher.Watch(FILE)
     if err != nil {
         log.Fatal(err)
     }
