@@ -14,7 +14,6 @@ func main() {
     defer context.Close()
     defer socket.Close()
     socket.Bind("tcp://*:5556")
-    socket.Bind("ipc://weather.ipc")
     
     // Open file and seek to end
     FILE := "/var/log/system.log"
