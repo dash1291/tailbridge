@@ -8,9 +8,10 @@ func main() {
   defer context.Close()
   defer socket.Close()
 
-  socket.SetSubscribe("")
+  fileName := "/Users/ashish/server_log"
+  socket.SetSubscribe(fileName)
   socket.Connect("tcp://localhost:5556")
-  println("connected")
+  println("Connected.")
 
   for {
     msg, err := socket.Recv(0)
@@ -18,6 +19,6 @@ func main() {
     if err != nil {
         println(err)
     }
-    println(string(msg))
+    println(string(msg)[len(fileName) + 1:])
   }
 }
