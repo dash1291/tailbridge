@@ -5,6 +5,8 @@ import (
     "log"
     "github.com/howeyc/fsnotify"
     "os"
+    "io/ioutil"
+    "strings"
 )
 
 func watchFile(fileName string, fileChannel chan string, logChannel chan []byte) {
@@ -62,10 +64,13 @@ func watchFile(fileName string, fileChannel chan string, logChannel chan []byte)
 }
 
 func main() {
-    files := []string {
-        "/var/log/system.log",
-        "/Users/ashish/server_log",
+    dat, err := ioutil.ReadFile("files.lst")
+    if err != nil {
+        println("Cannot open file `files.lst` containing files to watch.")
+        return
     }
+
+    files := strings.Split(string(dat), "\n")
 
     // Create and bind socket
     context, _ := zmq.NewContext()
@@ -80,7 +85,9 @@ func main() {
     println("Watching file for changes")
 
     for _, v := range files {
-        watchFile(v, fileChannel, logChannel)
+        if len(v) > 0 {
+            watchFile(v, fileChannel, logChannel)
+        }
     }
 
     for {
