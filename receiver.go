@@ -1,6 +1,10 @@
 package main
 
-import zmq "github.com/alecthomas/gozmq"
+import (
+  zmq "github.com/alecthomas/gozmq"
+  "os"
+)
+
 
 func main() {
   context, _ := zmq.NewContext()
@@ -8,7 +12,13 @@ func main() {
   defer context.Close()
   defer socket.Close()
 
-  fileName := "/Users/ashish/server_log"
+  if len(os.Args) < 2 {
+    println("Log file name required. \nUsage: receiver <filename>")
+    return
+  }
+
+  fileName := os.Args[1]
+
   socket.SetSubscribe(fileName)
   socket.Connect("tcp://localhost:5556")
   println("Connected.")
@@ -19,6 +29,8 @@ func main() {
     if err != nil {
         println(err)
     }
-    println(string(msg)[len(fileName) + 1:])
+    if len(msg) > (len(fileName) + 1) {
+      println(string(msg)[len(fileName) + 1:])
+    }
   }
 }
