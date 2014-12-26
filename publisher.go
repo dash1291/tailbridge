@@ -50,7 +50,7 @@ func watchFile(fileName string, fileChannel chan string, logChannel chan []byte)
                     }
                 }
                 size = new_size
-q            }
+            }
         }
     }()
 
