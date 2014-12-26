@@ -12,15 +12,16 @@ func main() {
   defer context.Close()
   defer socket.Close()
 
-  if len(os.Args) < 2 {
-    println("Log file name required. \nUsage: receiver <filename>")
+  if len(os.Args) < 3 {
+    println("More arguments needed. \nUsage: receiver <host> <filename>")
     return
   }
 
-  fileName := os.Args[1]
+  host := os.Args[1]
+  fileName := os.Args[2]
 
   socket.SetSubscribe(fileName)
-  socket.Connect("tcp://localhost:5556")
+  socket.Connect("tcp://" + host + ":5556")
   println("Connected.")
 
   for {
