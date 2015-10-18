@@ -8,9 +8,10 @@ import (
     "os/exec"
     "log"
     "strings"
+    "bytes"
 )
 
-func Tail(machine string, file_name string, out_bytes chan []byte) {
+func Tail(machine string, file_name string, out_bytes chan string) {
     tail_cmd := "tail -f " + file_name
     cmd := exec.Command("ssh", machine, tail_cmd)
     stdout, err := cmd.StdoutPipe()
@@ -21,11 +22,19 @@ func Tail(machine string, file_name string, out_bytes chan []byte) {
 
     cmd.Start()
     defer cmd.Wait()
+
+    line := bytes.NewBuffer([]byte{})
     r := make([]byte, 1)
 
     for {
         stdout.Read(r)
-        out_bytes <- r
+
+        if r[0] == '\n' {
+            out_bytes <- line.String()
+            line.Reset()
+        } else {
+            line.WriteByte(r[0])
+        }
     }
 }
 
@@ -46,7 +55,7 @@ func main() {
                 return
             }
 
-            out_bytes := make(chan []byte, 1)
+            out_bytes := make(chan string)
             go Tail(msg_parts[0], msg_parts[1], out_bytes)
 
             for {
