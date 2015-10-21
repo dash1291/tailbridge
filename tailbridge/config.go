@@ -17,6 +17,9 @@ type Group struct {
     Machines []string
 }
 
+// Machine-group map
+var machines map[string]string
+
 func ReadConfig(config_path string) Config {
     yamlFile, err := ioutil.ReadFile(config_path)
 
@@ -31,5 +34,16 @@ func ReadConfig(config_path string) Config {
         panic(err)
     }
 
+    BuildMachinesIndex(config.Groups)
     return config
+}
+
+func BuildMachinesIndex(groups map[string]Group) {
+    machines = make(map[string]string)
+
+    for group_name := range groups {
+        for _, ip := range groups[group_name].Machines {
+            machines[ip] = group_name
+        }
+    }
 }
