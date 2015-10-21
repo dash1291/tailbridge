@@ -13,6 +13,7 @@ type Config struct {
 
 type Group struct {
     User string
+    Port int
     Machines []string
 }
 
