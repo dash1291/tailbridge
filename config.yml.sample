@@ -1,0 +1,14 @@
+---
+  groups:
+    web:
+      user: root
+      port: 22
+      machines:
+        - 192.168.1.33
+        - 192.168.1.11
+    queue:
+      user: root
+      port: 28091
+      machines:
+        - 192.168.1.10
+        - 192.168.1.12
