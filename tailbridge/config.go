@@ -1,13 +1,13 @@
 package tailbridge
 
 import (
-    "fmt"
     "io/ioutil"
 
     "gopkg.in/yaml.v2"
 )
 
 type Config struct {
+    Listen int
     Groups map[string]Group
 }
 

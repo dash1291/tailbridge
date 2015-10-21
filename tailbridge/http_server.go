@@ -1,9 +1,9 @@
 // http server with socket.io
-package main
+package tailbridge
 
 import (
     "net/http"
-
+    "strconv"
     "github.com/googollee/go-socket.io"
     "os/exec"
     "log"
@@ -38,7 +38,7 @@ func Tail(machine string, file_name string, out_bytes chan string) {
     }
 }
 
-func main() {
+func InitServer(port int) {
     sio_server, err := socketio.NewServer(nil)
 
     if err != nil {
@@ -63,11 +63,6 @@ func main() {
             }
         })
 
-        socket.On("stream", func(msg string) {
-            log.Println("emit:", socket.Emit("chat message", msg))
-            socket.BroadcastTo("chat", "chat message", msg)
-        })
-
         socket.On("disconnection", func() {
             log.Println("on disconnect")
         })
@@ -79,6 +74,8 @@ func main() {
 
     http.Handle("/socket.io/", sio_server)
     http.Handle("/", http.FileServer(http.Dir("./static")))
-    log.Println("Serving at localhost:5000...")
-    log.Fatal(http.ListenAndServe(":5000", nil))
+
+    port_str := strconv.Itoa(port)
+    log.Println("Listening on 0.0.0.0:" + port_str)
+    log.Fatal(http.ListenAndServe("0.0.0.0:" + port_str, nil))
 }
