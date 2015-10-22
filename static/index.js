@@ -28,7 +28,7 @@ socket.on('stream', function(data) {
 
   var data = data.replace('\n', '<br>');
   var atBottom = (streamOut.scrollHeight - streamOut.scrollTop) === streamOut.offsetHeight;
-	streamOut.innerHTML += data;
+	streamOut.innerHTML += data + '<br>';
   if (atBottom) {
     streamOut.scrollTop = streamOut.scrollHeight - streamOut.offsetHeight
   }
