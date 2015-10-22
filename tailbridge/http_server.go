@@ -11,9 +11,13 @@ import (
     "bytes"
 )
 
-func Tail(machine string, file_name string, out_bytes chan string) {
+func Tail(machine string, user string, port int, file_name string, out_bytes chan string) {
     tail_cmd := "tail -f " + file_name
-    cmd := exec.Command("ssh", machine, tail_cmd)
+    cmd := exec.Command(
+        "ssh", "-p", strconv.Itoa(port),
+        user + "@" + machine,
+        tail_cmd)
+
     stdout, err := cmd.StdoutPipe()
 
     if err != nil {
@@ -55,8 +59,14 @@ func InitServer(port int) {
                 return
             }
 
+            user, port, ok := GetMachineParams(msg_parts[0])
+
+            if !ok {
+                println("Some problem with the IP provided.")
+            }
+
             out_bytes := make(chan string)
-            go Tail(msg_parts[0], msg_parts[1], out_bytes)
+            go Tail(msg_parts[0], user, port, msg_parts[1], out_bytes)
 
             for {
                 socket.Emit("stream", string(<-out_bytes))
