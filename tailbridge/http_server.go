@@ -14,7 +14,8 @@ import (
 func Tail(machine string, user string, port int, file_name string, out_bytes chan string) {
     tail_cmd := "tail -f " + file_name
     cmd := exec.Command(
-        "ssh", "-p", strconv.Itoa(port),
+        "ssh", "-oStrictHostKeyChecking=no", "-oUserKnownHostsFile=/dev/null",
+        "-p", strconv.Itoa(port),
         user + "@" + machine,
         tail_cmd)
 
