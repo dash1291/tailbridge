@@ -1,7 +1,5 @@
 # tailbridge
 
-*(Work in progress. Stay tuned)*
-
 This is supposed to be a very simple tool which does a very simple thing - lets you view logs on a remote machine without having to SSH into it.
 
 ## Setup and Usage
@@ -19,4 +17,10 @@ To run the server you need to have a `config.yml` present in the current directo
 After the configuration is done, the following command will start the server on the default port 9191 -
 ```
 go run main.go
+```
+
+Once the server is up and running, and assuming you have configured a linux machine with IP `192.168.1.33` with a user having proper access to the machine in your `config.yml`, one can navigate to the following url to tail one of the system logs file - 
+
+```
+http://localhost:9191#192.168.1.33,/var/log/messages
 ```
