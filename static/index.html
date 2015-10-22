@@ -3,17 +3,34 @@
 	<head>
 		<script src="/socket.io.js"></script>
     <style>
-     #stream-output {
+    html {
+      height: 100%;
+    }
+    body {
+      height: 90%;
+    }
+    #status {
+      background-color: white;
+      border-bottom: 1px solid #ccc;
+      padding: 5px 0 10px 10px;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+    #stream-output {
       background-color: #FCFFFF;
+      height: 100%;
       font-size: 12pt;
       font-family: monaco;
+      margin-top: 35px;
+      overflow: scroll;
       padding: 5px;
       width: 100%;
-     }
+    }
    </style>
 	</head>
 	<body>
-		Goedemorgen
+    <div id="status">Hi, this is tailbridge.</div>
     <div id="stream-output"></div>
     <script src="/index.js"></script>
 	</body>
