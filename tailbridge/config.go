@@ -2,7 +2,7 @@ package tailbridge
 
 import (
     "io/ioutil"
-
+    "regexp"
     "gopkg.in/yaml.v2"
 )
 
@@ -15,6 +15,7 @@ type Group struct {
     User string
     Port int
     Machines []string
+    Directories []string
 }
 
 // Machine-group map
@@ -59,3 +60,19 @@ func GetMachineParams(ip string) (user string, port int, succes bool) {
         return "", 0, ok
     }
 }
+
+func IsFileAllowed(file_name string, machine_ip string) bool {
+    group_name, ok := machines[machine_ip]
+
+    if !ok {
+        return false
+    }
+
+    dirs := config.Groups[group_name].Directories
+    for _, dir := range dirs {
+        match, _ := regexp.MatchString(dir, file_name)
+        return match
+    }
+    return false
+}
+

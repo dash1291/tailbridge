@@ -64,6 +64,12 @@ func InitServer(port int) {
 
             if !ok {
                 println("Some problem with the IP provided.")
+                return
+            }
+
+            if !IsFileAllowed(msg_parts[1], msg_parts[0]) {
+                println("File not allowed for this IP.")
+                return
             }
 
             out_bytes := make(chan string)
