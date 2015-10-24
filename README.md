@@ -24,3 +24,19 @@ Once the server is up and running, and assuming you have configured a linux mach
 ```
 http://localhost:9191#192.168.1.33,/var/log/messages
 ```
+
+### Configuration
+Here is a short definition of the various options that go in `config.yml` -
+
+`listen` - Listening port for the server
+
+`groups` - You can organize your similar machines in logical groups like web servers, databases, etc. A group can have certain settings which are common to the machines in that group
+
+>`user` - Use this user to SSH on the machines in this group
+
+>`port` - SSH server port on the remote machine
+
+>`machines` - List of machines in this group
+
+>`directories` - List of directories you want to allow the access to. Each element is a wildcard directory pattern.
+ 
