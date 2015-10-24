@@ -63,12 +63,12 @@ func InitServer(port int) {
             user, port, ok := GetMachineParams(msg_parts[0])
 
             if !ok {
-                println("Some problem with the IP provided.")
+                socket.Emit("invalid_ip")
                 return
             }
 
             if !IsFileAllowed(msg_parts[1], msg_parts[0]) {
-                println("File not allowed for this IP.")
+                socket.Emit("denied")
                 return
             }
 
@@ -78,10 +78,6 @@ func InitServer(port int) {
             for {
                 socket.Emit("stream", string(<-out_bytes))
             }
-        })
-
-        socket.On("disconnection", func() {
-            log.Println("on disconnect")
         })
     })
 

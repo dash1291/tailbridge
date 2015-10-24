@@ -15,7 +15,6 @@ socket.on('connect', function() {
 
     statusElement.innerHTML = "Connecting to tailbridge to fetch logs from <b>" + machine.ip + "</b>...";
     console.log(status.innerHTML);
-    console.log('yo');
     socket.emit('init', hash);
   }
 });
@@ -32,5 +31,12 @@ socket.on('stream', function(data) {
   if (atBottom) {
     streamOut.scrollTop = streamOut.scrollHeight - streamOut.offsetHeight
   }
-})
+});
 
+socket.on('denied', function(data) {
+  statusElement.innerHTML = "Tailbridge cannot access the requested file.";
+});
+
+socket.on('invalid_ip', function(data) {
+  statusElement.innerHTML = "Requested IP not found in the config.";
+});
