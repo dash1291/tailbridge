@@ -3,6 +3,7 @@ package tailbridge
 import (
     "io/ioutil"
     "regexp"
+    "strings"
     "gopkg.in/yaml.v2"
 )
 
@@ -62,6 +63,17 @@ func GetMachineParams(ip string) (user string, port int, succes bool) {
 }
 
 func IsFileAllowed(file_name string, machine_ip string) bool {
+    illegalSet := []string{"|", ">", "<", ";", "$", "&"}
+    
+    var contains bool
+    for _, c := range illegalSet {
+        contains = strings.Contains(file_name, c)
+
+        if contains {
+            return false
+        }
+    }
+
     group_name, ok := machines[machine_ip]
 
     if !ok {
