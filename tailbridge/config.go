@@ -81,9 +81,13 @@ func IsFileAllowed(file_name string, machine_ip string) bool {
     }
 
     dirs := config.Groups[group_name].Directories
+
+    var match bool
     for _, dir := range dirs {
-        match, _ := regexp.MatchString(dir, file_name)
-        return match
+        match, _ = regexp.MatchString(dir, file_name)
+        if match {
+            return true
+        }
     }
     return false
 }
