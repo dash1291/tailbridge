@@ -1,8 +1,18 @@
 var socket = io.connect();
 var streamOut = document.querySelector('#stream-output');
-var statusElement = document.querySelector('#status')
+var statusElement = document.querySelector('#status-text');
+var filterRegex = new RegExp('', 'g');
 var firstStream = true;
 var machine = {};
+
+var filterLogs = function(logs) {
+  var filterLogs = [];
+  for (var i = 0; i < logs.length; i++) {
+    if (filterRegex.test(logs[i]))
+      filterLogs.push(logs[i]);
+  }
+  return filterLogs;
+};
 
 socket.on('connect', function() {
   var hash = window.location.hash;
@@ -25,7 +35,7 @@ socket.on('stream', function(data) {
     firstStream = false;
   }
 
-  var data = data.replace('\n', '<br>');
+  var data = filterLogs(data.split('\n')).join('<br>');
   var atBottom = (streamOut.scrollHeight - streamOut.scrollTop) === streamOut.offsetHeight;
 	streamOut.innerHTML += data + '<br>';
   if (atBottom) {
