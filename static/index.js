@@ -8,12 +8,12 @@ var firstStream = true;
 var machine = {};
 
 var filterLogs = function(logs) {
-  var filterLogs = [];
+  var filteredLogs = [];
   for (var i = 0; i < logs.length; i++) {
     if (filterRegex.test(logs[i]))
-      filterLogs.push(logs[i]);
+      filteredLogs.push(logs[i]);
   }
-  return filterLogs;
+  return filteredLogs;
 };
 
 var updateFilter = function() {
@@ -45,7 +45,8 @@ socket.on('stream', function(data) {
 
   var data = filterLogs(data.split('\n')).join('<br>');
   var atBottom = (streamOut.scrollHeight - streamOut.scrollTop) === streamOut.offsetHeight;
-	streamOut.innerHTML += data + '<br>';
+  if (data != "")
+	 streamOut.innerHTML += data + '<br>';
   if (atBottom) {
     streamOut.scrollTop = streamOut.scrollHeight - streamOut.offsetHeight
   }
