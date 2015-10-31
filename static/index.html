@@ -27,10 +27,20 @@
       padding: 5px;
       width: 100%;
     }
+    .filter {
+      float: right;
+      margin-right: 20px;
+    }
    </style>
 	</head>
 	<body>
-    <div id="status">Hi, this is tailbridge.</div>
+    <div id="status">
+      <span id="status-text">Hi, this is tailbridge.</span>
+      <div class="filter">
+        <input type="text" placeholder="Regex" id="regexInput">
+        <button id="filterBtn">Filter</button>
+      </div>
+    </div>
     <div id="stream-output"></div>
     <script src="/index.js"></script>
 	</body>

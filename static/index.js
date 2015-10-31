@@ -1,8 +1,26 @@
 var socket = io.connect();
 var streamOut = document.querySelector('#stream-output');
-var statusElement = document.querySelector('#status')
+var statusElement = document.querySelector('#status-text');
+var filterInput = document.querySelector('#regexInput');
+var filterBtn = document.querySelector('#filterBtn');
+var filterRegex = new RegExp('', 'g');
 var firstStream = true;
 var machine = {};
+
+var filterLogs = function(logs) {
+  var filteredLogs = [];
+  for (var i = 0; i < logs.length; i++) {
+    if (filterRegex.test(logs[i]))
+      filteredLogs.push(logs[i]);
+  }
+  return filteredLogs;
+};
+
+var updateFilter = function() {
+  filterRegex = new RegExp(filterInput.value, 'g');
+  console.log('Update regex filter');
+}
+filterBtn.addEventListener('click', updateFilter, false);
 
 socket.on('connect', function() {
   var hash = window.location.hash;
@@ -25,9 +43,10 @@ socket.on('stream', function(data) {
     firstStream = false;
   }
 
-  var data = data.replace('\n', '<br>');
+  var data = filterLogs(data.split('\n')).join('<br>');
   var atBottom = (streamOut.scrollHeight - streamOut.scrollTop) === streamOut.offsetHeight;
-	streamOut.innerHTML += data + '<br>';
+  if (data != "")
+	 streamOut.innerHTML += data + '<br>';
   if (atBottom) {
     streamOut.scrollTop = streamOut.scrollHeight - streamOut.offsetHeight
   }
