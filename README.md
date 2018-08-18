@@ -1,5 +1,7 @@
 # tailbridge
 
+[![Yash Approved](https://img.shields.io/badge/yash-approved-brightgreen.svg)]()
+
 This is supposed to be a very simple tool which does a very simple thing - lets you view logs on a remote machine without having to SSH into it.
 
 ## Setup and Usage
